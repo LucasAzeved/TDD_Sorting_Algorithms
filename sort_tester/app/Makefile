@@ -44,7 +44,7 @@ compile:
 	$(GCC_COMPILER) $(CFLAGS) $(INC_DIRS) $(SRC_FILES) -o $(TARGET)
 
 cppcheck:
-	cppcheck --enable=all --suppress=missingIncludeSystem --suppress=unusedFunction $(INC_DIRS) src/foo.c
+	cppcheck --enable=all --suppress=missingIncludeSystem --suppress=unusedFunction $(INC_DIRS) src/Test.c
 
 valgrind:
 	$(GCC_COMPILER) -g -Wall -Wfatal-errors $(INC_DIRS) $(SRC_FILES) -o $(TARGET)
@@ -57,7 +57,7 @@ sanitizer:
 cov:
 	$(GCC_COMPILER) $(CFLAGS) -fprofile-arcs -ftest-coverage $(INC_DIRS) $(SRC_FILES) -o $(TARGET)
 	./$(TARGET) -v
-	gcov -b foo.c
+	gcov -b Test.c
 
 run:
 	./$(TARGET) -v
