@@ -23,7 +23,7 @@ CFLAGS += -Wold-style-definition
 TARGET = all_tests.out
 SRC_FILES=\
   $(UNITY_ROOT)/src/unity.c \
-  $(UNITY_ROOT)/extras/src/unity_fixture.c \
+  $(UNITY_ROOT)/extras/fixture/src/unity_fixture.c \
   src/sort.c \
   src/bubble_sort.c \
   src/counting_sort.c \
@@ -36,7 +36,7 @@ SRC_FILES=\
   test/Test.c \
   test/test_runners/Test_Runner.c \
   test/test_runners/all_tests.c
-INC_DIRS=-Isrc -I$(UNITY_ROOT)/src -I$(UNITY_ROOT)/extras/src
+INC_DIRS=-Isrc -I$(UNITY_ROOT)/src -I$(UNITY_ROOT)/extras/fixture/src
 
 all: clean compile run
 
@@ -44,7 +44,7 @@ compile:
 	$(GCC_COMPILER) $(CFLAGS) $(INC_DIRS) $(SRC_FILES) -o $(TARGET)
 
 cppcheck:
-	cppcheck --enable=all --suppress=missingIncludeSystem --suppress=unusedFunction $(INC_DIRS) Test.c
+	cppcheck --enable=all --suppress=missingIncludeSystem --suppress=unusedFunction $(INC_DIRS) src/sort.c
 
 valgrind:
 	$(GCC_COMPILER) -g -Wall -Wfatal-errors $(INC_DIRS) $(SRC_FILES) -o $(TARGET)
