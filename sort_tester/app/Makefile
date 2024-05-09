@@ -57,7 +57,7 @@ sanitizer:
 cov:
 	$(GCC_COMPILER) $(CFLAGS) -fprofile-arcs -ftest-coverage $(INC_DIRS) $(SRC_FILES) -o $(TARGET)
 	./$(TARGET) -v
-	gcov -b sort.c
+	gcov -b *.gcda
 
 run:
 	./$(TARGET) -v
