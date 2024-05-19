@@ -30,7 +30,7 @@ void InvalidTest(int *a, int length, int algorithm) {
     TEST_ASSERT_EQUAL(1, sort(a, length, (char *)type, algorithm));
 }
 
-TEST(Sort, TestEverythingValid) {
+TEST(Sort, ParametrosValidos) {
 	int a[] = {1, 2, 3, 4, 5};
 	int length = 5;
 
@@ -38,7 +38,7 @@ TEST(Sort, TestEverythingValid) {
 		ValidTest(a, length, algorithm);
 }
 
-TEST(Sort, TestInvalidType) {
+TEST(Sort, ComplexidadeInvalida) {
 	int a[] = {1, 2, 3, 4, 5};
 	int length = 5;
 	const char *type = "T1";
@@ -49,7 +49,7 @@ TEST(Sort, TestInvalidType) {
 
 
 // TODO Talvez remover
-TEST(Sort, TestInvalidIntType) {
+TEST(Sort, ComplexidadeInvalidaInteiro) {
 	int a[] = {1, 2, 3, 4, 5};
 	int length = 5;
 	int type = 2;
@@ -57,7 +57,7 @@ TEST(Sort, TestInvalidIntType) {
 	TEST_ASSERT_EQUAL(1, sort(a, length, (void *)&type, 7)); // Needed to add this "(void *)&" to remove warning pointing type mismatch
 }
 
-TEST(Sort, TestInvalidEmptyType) {
+TEST(Sort, ComplexidadeInvalidaVazio) {
 	int a[] = {1, 2, 3, 4, 5};
 	int length = 5;
 	const char *type = "";
@@ -66,7 +66,7 @@ TEST(Sort, TestInvalidEmptyType) {
 		TEST_ASSERT_EQUAL(1, sort(a, length, (char *)type, i));
 }
 
-TEST(Sort, TestValidButWrongType) {
+TEST(Sort, ComplexidadeValidaErrada) {
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	int length = 10;
 
@@ -74,7 +74,7 @@ TEST(Sort, TestValidButWrongType) {
 		InvalidTest(a, length, i);
 }
 
-TEST(Sort, TestInvalidAlgorithm) {
+TEST(Sort, AlgoritmoInvalido) {
 	int a[] = {1, 2, 3, 4, 5};
 	int length = 5;
 	const char *type = "On";
@@ -82,7 +82,7 @@ TEST(Sort, TestInvalidAlgorithm) {
 	TEST_ASSERT_EQUAL(1, sort(a, length, (char *)type, 9));
 }
 
-TEST(Sort, TestInvalidCharAlgorithm) {
+TEST(Sort, AlgoritmoInvalidoChar) {
 	int a[] = {1, 2, 3, 4, 5};
 	int length = 5;
 	const char *type = "On";
@@ -90,7 +90,7 @@ TEST(Sort, TestInvalidCharAlgorithm) {
 	TEST_ASSERT_EQUAL(1, sort(a, length, (char *)type, 'a'));
 }
 
-TEST(Sort, TestWrongBiggerLenght) {
+TEST(Sort, TamanhoMaiorQueVetor) {
 	int a[] = {1, 2, 3, 4, 5};
 	int length = 5; // Valgrind error, used to be: int length = 6;
     
@@ -99,7 +99,7 @@ TEST(Sort, TestWrongBiggerLenght) {
 }
 
 // TODO Remover
-TEST(Sort, TestInvalidCharLenght) {
+TEST(Sort, TamanhoInvalidoChar) {
 	int a[] = {1, 2, 3, 4, 5};
 	char length = 'i'-'d'; // Only works because ASCII of " 'i' - 'd' " translates to the integer 5, otherwise causes sanitizer error
 	const char *type = "On";
@@ -118,7 +118,7 @@ TEST(Sort, TestInvalidCharLenght) {
 	}
 }
 
-TEST(Sort, TestOutOfOrderArray) {
+TEST(Sort, VetorValidoDesordenado) {
 	int a[] = {5, 4, 3, 2, 1};
 	int arrayOrdered[] = {1, 2, 3, 4, 5};
 	int length = 5;
@@ -143,7 +143,7 @@ TEST(Sort, TestOutOfOrderArray) {
 	}
 }
 
-TEST(Sort, TestTwoValuesArray) {
+TEST(Sort, TamanhoValidoLimiteInferior) {
 	int a[] = {2, 1};
 	int arrayOrdered[] = {1, 2};
 	int length = 2;
@@ -168,7 +168,7 @@ TEST(Sort, TestTwoValuesArray) {
 }
 
 // 
-TEST(Sort, TestTwentyValuesArray) {
+TEST(Sort, TamanhoValidoLimiteSuperior) {
 	int a[] = {19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2};
 	int arrayOrdered[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20};
 	int length = 20;
@@ -192,7 +192,27 @@ TEST(Sort, TestTwentyValuesArray) {
 	}
 }
 
-TEST(Sort, TestTwentyOneValuesArray) {
+TEST(Sort, TamanhoInvalidoLimiteInferior) {
+	int a[] = {1};
+	int arrayOrdered[] = {1};
+	int length = 1;
+	const char *type;
+	char message[50];
+	for (int algorithm = 0; algorithm < 8; algorithm++) {
+		sprintf(message, "Error in the index: %d", algorithm);
+		if (algorithm < 2)
+			type = "On";		
+		else if (algorithm < 5)
+			type = "On2";
+		else
+			type = "Onlogn";
+        sort(a, length, (char *)type, algorithm);
+        
+		TEST_ASSERT_EQUAL_INT32_ARRAY_MESSAGE(arrayOrdered, a, length, message);
+	}
+}
+
+TEST(Sort, TamanhoInvalidoLimiteSuperior) {
 	int a[] = {19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 21}; // Only works because the value 21 is in the index 20 and not being changed
 	// int a[] = {21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 	int arrayOrdered[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20, 21};
@@ -220,7 +240,7 @@ TEST(Sort, TestTwentyOneValuesArray) {
 }
 
 // TODO Talvez remover
-TEST(Sort, TestSameValuesArray) {
+TEST(Sort, VetorValoresIguais) {
 	int a[] = {1, 1, 1, 1, 1};
 	int arrayOrdered[] = {1, 1, 1, 1, 1};
 	int length = 5;
@@ -233,28 +253,7 @@ TEST(Sort, TestSameValuesArray) {
 	}
 }
 
-TEST(Sort, TestOneValueArray) {
-	int a[] = {1};
-	int arrayOrdered[] = {1};
-	int length = 1;
-	const char *type;
-	char message[50];
-	for (int algorithm = 0; algorithm < 8; algorithm++) {
-		sprintf(message, "Error in the index: %d", algorithm);
-		if (algorithm < 2)
-			type = "On";		
-		else if (algorithm < 5)
-			type = "On2";
-		else
-			type = "Onlogn";
-        sort(a, length, (char *)type, algorithm);
-        
-		TEST_ASSERT_EQUAL_INT32_ARRAY_MESSAGE(arrayOrdered, a, length, message);
-	}
-}
-
-
-TEST(Sort, TestOrderedArray) {
+TEST(Sort, VetorValidoOrdenado) {
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20};
 	int arrayOrdered[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20};
 	int length = 20;
@@ -276,7 +275,8 @@ TEST(Sort, TestOrderedArray) {
 	}
 }
 
-TEST(Sort, TestLowerHalfArray) {
+// TODO parece desnecessario
+TEST(Sort, VetorValidoDesordenadoTesteInferior) {
 	int a[] = {19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2};
 	int arrayOrdered[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20};
 	int length = 20;
@@ -303,7 +303,8 @@ TEST(Sort, TestLowerHalfArray) {
 	}
 }
 
-TEST(Sort, TestUpperHalfArray) {
+// TODO parece desnecessario
+TEST(Sort, VetorValidoDesordenadoTesteSuperior) {
 	int a[] = {19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2};
 	int arrayOrdered[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20};
 	int length = 20;
@@ -330,7 +331,8 @@ TEST(Sort, TestUpperHalfArray) {
 	}
 }
 
-TEST(Sort, TestEmptyArray) {
+// Eesults in gcov error
+TEST(Sort, VetorVazio) {
 	int a[] = {};
 	int arrayOrdered[] = {};
 	int length = 0;
@@ -378,7 +380,7 @@ TEST(Sort, TestFloatValueArray) {
 }
 
 // This test generates segmentation fault error, indicating that the sort function cannot receive char values
-TEST(Sort, TestCharValueArray) {
+TEST(Sort, VetorDeChar) {
 	char a[] = {'a', 'b', 'c', 'd', 'e'};
 	char arrayOrdered[] = {'a', 'b', 'c', 'd', 'e'};
 	int length = 5;
@@ -402,7 +404,7 @@ TEST(Sort, TestCharValueArray) {
 }
 
 // This test generates segmentation fault error, indicating that the sort function cannot receive negative integer values
-TEST(Sort, TestNegativeValuesArray) {
+TEST(Sort, VetorDeNegativos) {
 	int a[] = {-5, -4, -3, -2, -1};
 	int arrayOrdered[] = {-1, -2, -3, -4, -5};
 	int length = 5;
