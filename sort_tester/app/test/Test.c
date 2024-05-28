@@ -329,9 +329,8 @@ TEST(Sort, VetorVazio) {
 		else
 			type = "Onlogn";
         
-        sort(a, length, (char *)type, algorithm);
-        
-		TEST_ASSERT_EQUAL_INT32_ARRAY_MESSAGE(arrayOrdered, a, length, message);
+        TEST_ASSERT_EQUAL(1, sort(a, length, (char *)type, algorithm));
+		// TEST_ASSERT_EQUAL_INT32_ARRAY_MESSAGE(arrayOrdered, a, length, message);
 	}
 }
 
@@ -352,8 +351,8 @@ TEST(Sort, VetorDeNegativos) {
 			type = "On2";
 		else
 			type = "Onlogn";
-        sort(a, length, (char *)type, algorithm);
         
+        TEST_ASSERT_EQUAL(0, sort(a, length, (char *)type, algorithm));
         TEST_ASSERT_EQUAL_INT32_ARRAY_MESSAGE(arrayOrdered, a, length, message);
 		
 		for (int j = length; j > 0; j--)

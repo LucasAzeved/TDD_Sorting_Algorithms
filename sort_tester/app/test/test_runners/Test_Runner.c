@@ -18,8 +18,6 @@ TEST_GROUP_RUNNER(Sort)
     RUN_TEST_CASE(Sort, TamanhoInvalidoLimiteSuperior);
     RUN_TEST_CASE(Sort, VetorValoresIguais);
     RUN_TEST_CASE(Sort, VetorValidoDesordenadoMeio);
-    //RUN_TEST_CASE(Sort, VetorVazio); // This test has been commented because it results in gcov error
-    //RUN_TEST_CASE(Sort, TestFloatValueArray); // This test has been commented because it results in segmentation fault
-    //RUN_TEST_CASE(Sort, VetorDeChar); // This test has been commented because it results in segmentation fault
+    RUN_TEST_CASE(Sort, VetorVazio); // This test has been commented because it results in gcov error
     // RUN_TEST_CASE(Sort, VetorDeNegativos); // This test has been commented because it results in segmentation fault
 }
