@@ -6,31 +6,6 @@ TEST_GROUP(Sort);
 TEST_SETUP(Sort) {}
 TEST_TEAR_DOWN(Sort) {}
 
-// void ValidTest(int *a, int length, int algorithm) {
-// 	const char *type;
-// 	if (algorithm < 2)
-//         type = "On";
-// 	else if (algorithm < 5)
-// 		type = "On2";
-// 	else
-// 		type = "Onlogn";
-    
-//     TEST_ASSERT_EQUAL(0, sort(a, length, (char *)type, algorithm));
-// }
-
-// void InvalidTest(int *a, int length, int algorithm) {
-// 	const char *type;
-// 	if (algorithm < 2)
-//         type = "On2";
-// 	else if (algorithm < 5)
-// 		type = "Onlogn";
-// 	else
-// 		type = "On";
-	
-//     TEST_ASSERT_EQUAL(1, sort(a, length, (char *)type, algorithm));
-// }
-
-// TODO Testar
 TEST(Sort, ParametrosValidos) {
 	int a[] = {1, 2, 3, 4, 5};
 	int length = 5;
@@ -240,8 +215,8 @@ TEST(Sort, TamanhoInvalidoLimiteSuperior) {
 
 // TODO Talvez remover
 TEST(Sort, VetorValoresIguais) {
-	int a[] = {1, 1, 1, 1, 1};
-	int arrayOrdered[] = {1, 1, 1, 1, 1};
+	int a[] = {9, 9, 9, 9, 9};
+	int arrayOrdered[] = {9, 9, 9, 9, 9};
 	int length = 5;
 	char message[50];
     const char *type;
@@ -283,11 +258,12 @@ TEST(Sort, VetorValidoOrdenado) {
 	}
 }
 
-// TODO ajustar para ordenar no meio
 TEST(Sort, VetorValidoDesordenadoMeio) {
-	int a[] = {19, 17, 15, 13, 11, 9, 7, 5, 3, 1, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2};
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 13, 12, 11, 10, 9, 14, 15, 16, 17, 18, 19, 20};
 	int arrayOrdered[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20};
-	int length = 20;
+	int length = 5;
+    int pos_init = 8;
+    int total_length = 20;
 	const char *type;
 	char message[50];
     
@@ -301,20 +277,20 @@ TEST(Sort, VetorValidoDesordenadoMeio) {
 		else
 			type = "Onlogn";
         
-        sort(a, length, (char *)type, algorithm);
+        sort(a+pos_init, length, (char *)type, algorithm);
         
-		for (int k = 10; k < 20; k++)
+		for (int k = 0; k < total_length; k++)
             TEST_ASSERT_EQUAL_INT32_MESSAGE(arrayOrdered[k], a[k], message);
         
 		for (int j = length; j > 0; j--)
-			a[length - j] = j;
+			a[pos_init + length - j] = j + pos_init;
 	}
 }
 
 // Resulta em erro
 TEST(Sort, VetorVazio) {
 	int a[] = {};
-	int arrayOrdered[] = {};
+	// int arrayOrdered[] = {};
 	int length = 0;
 	const char *type;
     char message[50];
@@ -334,7 +310,7 @@ TEST(Sort, VetorVazio) {
 	}
 }
 
-// segmentation fault
+// Segmentation fault
 TEST(Sort, VetorDeNegativos) {
 	int a[] = {-5, -4, -3, -2, -1};
 	int arrayOrdered[] = {-1, -2, -3, -4, -5};
